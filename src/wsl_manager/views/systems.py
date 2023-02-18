@@ -14,7 +14,8 @@ def display_systems(systems: List[System]) -> System:
     table.add_column("State", justify="center")
 
     for number, system in enumerate(systems, 1):
-        table.add_row(str(number), system.name, system.state)
+        color = "green" if system.state == "Stopped" else "red"
+        table.add_row(str(number), system.name, system.state, style=color)
     console.print(table)
 
     selected_option = Prompt.ask(
