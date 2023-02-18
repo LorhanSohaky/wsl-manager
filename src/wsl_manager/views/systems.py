@@ -14,7 +14,7 @@ def display_systems(systems: List[System]) -> System:
     table.add_column("State", justify="center")
 
     for number, system in enumerate(systems, 1):
-        color = "green" if system.state == "Stopped" else "red"
+        color = "red" if system.running else "green"
         table.add_row(str(number), system.name, system.state, style=color)
     console.print(table)
 

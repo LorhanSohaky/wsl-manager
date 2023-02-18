@@ -6,11 +6,11 @@ def main():
     systems = controllers.list_systems()
     selected_system = views.display_systems(systems)
 
-    if selected_system.state != "Stopped":
-        is_terminated = views.display_warning_to_terminate_system(
+    if selected_system.running:
+        can_terminate = views.display_warning_to_terminate_system(
             selected_system
         )
-        if not is_terminated:
+        if not can_terminate:
             return
 
         controllers.terminate_system(selected_system)

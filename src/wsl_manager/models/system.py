@@ -52,3 +52,11 @@ class System:
             data["version"],
             data["base_path"],
         )
+
+    @classmethod
+    def is_running(cls, system: "System") -> bool:
+        return system.state != "Stopped"
+
+    @property
+    def running(self) -> bool:
+        return self.__class__.is_running(self)
