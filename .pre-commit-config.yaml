@@ -12,13 +12,7 @@ repos:
         entry: black
         language: system
         types: [python]
-        args:
-          [
-            "--line-length",
-            "79",
-            "--preview",
-            "--experimental-string-processing",
-          ]
+        args: ["--line-length", "79", "--preview"]
   - repo: local
     hooks:
       - id: isort
