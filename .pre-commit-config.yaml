@@ -1,23 +1,35 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-    -   id: check-yaml
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
--   repo: https://github.com/psf/black
-    rev: 23.1.0
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
     hooks:
-    -   id: black
--   repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+      - id: black
+        name: black
+        entry: black
+        language: system
+        types: [python]
+        args:
+          [
+            "--line-length",
+            "79",
+            "--preview",
+            "--experimental-string-processing",
+          ]
+  - repo: local
     hooks:
-    -   id: flake8
--   repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
+      - id: isort
+        name: isort
+        entry: isort
+        language: system
+        types: [python]
+  - repo: local
     hooks:
-    -   id: isort
--   repo: https://github.com/microsoft/pyright
-    rev: 1.1.294
-    hooks:
-    -   id: pyright
+      - id: flake8
+        name: flake8
+        entry: flake8
+        language: system
+        types: [python]
