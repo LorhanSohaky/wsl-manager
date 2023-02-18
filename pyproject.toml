@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "wsl-manager"
+version = "0.1.0"
+description = "An easy way to maintain your WSL distros"
+authors = ["Lorhan Sohaky <contato+gi74@lorhan.me>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "wsl_manager"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+rich = "^13.3.1"
+
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.294"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+pre-commit = "^3.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
