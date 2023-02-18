@@ -9,7 +9,7 @@ from .console import console
 
 def display_systems(systems: List[System]) -> System:
     table = Table(title="All Systems")
-    table.add_column("nº", justify="center", no_wrap=True)
+    table.add_column("#", justify="center", no_wrap=True)
     table.add_column("Name", justify="center")
     table.add_column("State", justify="center")
 
