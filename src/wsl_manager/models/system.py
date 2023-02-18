@@ -10,7 +10,9 @@ class TypedSystem(TypedDict):
 
 
 class System:
-    def __init__(self, id: str, name: str, state: str, version: str, base_path: str):
+    def __init__(
+        self, id: str, name: str, state: str, version: str, base_path: str
+    ):
         self.id = id
         self.name = name
         self.state = state
@@ -18,7 +20,10 @@ class System:
         self.base_path = base_path
 
     def __repr__(self):
-        return f"System(name={self.name}, state={self.state}, version={self.version})"
+        return (
+            f"System(name={self.name}, state={self.state},"
+            f" version={self.version})"
+        )
 
     def __str__(self):
         return f"System {self.name} with state {self.state}"

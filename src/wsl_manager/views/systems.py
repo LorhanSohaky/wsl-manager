@@ -1,6 +1,5 @@
 from typing import List
 
-
 from models import System
 
 
@@ -11,7 +10,9 @@ def display_systems(systems: List[System]) -> System:
         for number, system in enumerate(systems, 1):
             print(f"[{number}] {system.name} ({system.state})")
 
-        selected_option = input("Insert the number of the system you want to select: ")
+        selected_option = input(
+            "Insert the number of the system you want to select: "
+        )
 
         is_not_a_number = not selected_option.isdigit()
         is_out_of_range = (
@@ -30,7 +31,10 @@ def display_systems(systems: List[System]) -> System:
 def display_warning_to_terminate_system(system: System) -> bool:
     is_valid_confirmation = False
     while is_valid_confirmation is False:
-        print("This system is not terminated. To continue, you must terminate it.")
+        print(
+            "This system is not terminated. To continue, you must"
+            " terminate it."
+        )
         print(f"Are you sure you want to terminate {system.name}? (y/n)")
 
         confirmation = input("Confirmation: ").lower()

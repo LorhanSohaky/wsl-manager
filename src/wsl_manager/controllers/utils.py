@@ -1,8 +1,9 @@
-from dataclasses import dataclass
-from typing import List
+import functools
 import re
 import subprocess
-import functools
+from dataclasses import dataclass
+from typing import List
+
 import chardet
 
 

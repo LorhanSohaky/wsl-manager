@@ -1,7 +1,9 @@
 import os
+from tempfile import NamedTemporaryFile
+
 from models import System
+
 from .utils import run_command
-from tempfile import NamedTemporaryFile, TemporaryFile
 
 
 def get_script_content(system: System) -> str:

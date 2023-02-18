@@ -1,16 +1,11 @@
-from typing import List, Dict, TypedDict
 import re
 from itertools import repeat
-from winreg import (
-    HKEY_CURRENT_USER,
-    EnumValue,
-    OpenKey,
-    QueryInfoKey,
-    EnumKey,
-)
+from typing import Dict, List, TypedDict
+from winreg import HKEY_CURRENT_USER, EnumKey, EnumValue, OpenKey, QueryInfoKey
 
 from models import System
-from .utils import run_command, parse_table, compose
+
+from .utils import compose, parse_table, run_command
 
 
 def list_systems() -> List[System]:
@@ -73,7 +68,10 @@ def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
 
 
 def _is_guid(string: str) -> bool:
-    return re.match(r"{[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}}", string) is not None
+    return (
+        re.match(r"{[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}}", string)
+        is not None
+    )
 
 
 def _clean_table(table: List[List[str]]) -> List[List[str]]:
@@ -93,7 +91,9 @@ def _remove_asterisk_if_present(string: str) -> str:
     return string
 
 
-def _factory_system(infos: Dict[str, AdditionalInfo], columns: List[str]) -> System:
+def _factory_system(
+    infos: Dict[str, AdditionalInfo], columns: List[str]
+) -> System:
     name = columns[0]
     state = columns[1]
     version = columns[2]

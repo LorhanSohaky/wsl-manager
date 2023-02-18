@@ -7,7 +7,9 @@ def main():
     selected_system = views.display_systems(systems)
 
     if selected_system.state != "Stopped":
-        is_terminated = views.display_warning_to_terminate_system(selected_system)
+        is_terminated = views.display_warning_to_terminate_system(
+            selected_system
+        )
         if not is_terminated:
             return
 
