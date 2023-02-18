@@ -7,15 +7,20 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "wsl_manager"}]
 
+[tool.poe.tasks]
+fix = "pre-commit run --all-files"
+
 [tool.poetry.dependencies]
 python = "^3.11"
 rich = "^13.3.1"
+chardet = "^5.1.0"
 
 [tool.poetry.group.dev.dependencies]
-pyright = "^1.1.294"
 flake8 = "^6.0.0"
 isort = "^5.12.0"
 pre-commit = "^3.0.4"
+black = "^23.1.0"
+poethepoet = "^0.18.1"
 
 [build-system]
 requires = ["poetry-core"]
