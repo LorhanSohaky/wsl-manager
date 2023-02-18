@@ -1,31 +1,30 @@
 from typing import List
 
 from models import System
+from rich.prompt import Prompt
+from rich.table import Table
+
+from .console import console
 
 
 def display_systems(systems: List[System]) -> System:
-    selected_option = None
-    while selected_option is None:
-        print("All systems:")
-        for number, system in enumerate(systems, 1):
-            print(f"[{number}] {system.name} ({system.state})")
+    table = Table(title="All Systems")
+    table.add_column("nº", justify="center", no_wrap=True)
+    table.add_column("Name", justify="center")
+    table.add_column("State", justify="center")
 
-        selected_option = input(
-            "Insert the number of the system you want to select: "
-        )
+    for number, system in enumerate(systems, 1):
+        table.add_row(str(number), system.name, system.state)
+    console.print(table)
 
-        is_not_a_number = not selected_option.isdigit()
-        is_out_of_range = (
-            int(selected_option) > len(systems) or int(selected_option) < 1
-        )
-        if is_not_a_number or is_out_of_range:
-            print("Invalid option")
-            selected_option = None
-            continue
+    selected_option = Prompt.ask(
+        "Insert the number of the system you want to select",
+        choices=[str(number) for number in range(1, len(systems) + 1)],
+        show_choices=False,
+    )
 
-        selected_option = int(selected_option)
-
-    return systems[selected_option - 1]
+    index = int(selected_option) - 1
+    return systems[index]
 
 
 def display_warning_to_terminate_system(system: System) -> bool:
