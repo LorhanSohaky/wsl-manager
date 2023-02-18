@@ -5,6 +5,7 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 from .console import console
+from .utils import LowercasePrompt
 
 
 def display_systems(systems: List[System]) -> System:
@@ -29,22 +30,22 @@ def display_systems(systems: List[System]) -> System:
 
 
 def display_warning_to_terminate_system(system: System) -> bool:
-    is_valid_confirmation = False
-    while is_valid_confirmation is False:
-        print(
-            "This system is not terminated. To continue, you must"
-            " terminate it."
-        )
-        print(f"Are you sure you want to terminate {system.name}? (y/n)")
+    console.print(
+        "This [bold]system is not terminated[/bold]. To continue, you must"
+        " terminate it."
+    )
+    console.print(
+        "[bold red]Remember to close all the programs that are using the"
+        " system or it could corrupt the system![/bold red]"
+    )
+    confirmation = LowercasePrompt.ask(
+        f"Are you sure you want to terminate {system.name}?",
+        choices=["y", "n", "yes", "no"],
+        show_choices=False,
+    )
 
-        confirmation = input("Confirmation: ").lower()
-        is_valid_confirmation = confirmation in ["yes", "y", "no", "n"]
-        if not is_valid_confirmation:
-            print("Invalid confirmation")
-            continue
+    if confirmation in ["y", "yes"]:
+        return True
 
-        if confirmation not in ["yes", "y"]:
-            print("Termination cancelled")
-            return False
-
-    return True
+    console.print("Termination cancelled")
+    return False
