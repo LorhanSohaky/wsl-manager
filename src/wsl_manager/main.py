@@ -17,6 +17,7 @@ def main():
 
     script_content = controllers.get_script_content(selected_system)
     views.display_script_content(script_content)
+    views.display_shrinking()
     controllers.shrink(script_content)
     views.display_shrink_ok()
 
