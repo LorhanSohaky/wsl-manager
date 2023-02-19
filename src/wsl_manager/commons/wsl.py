@@ -1,11 +1,24 @@
 import re
 from itertools import repeat
+from pathlib import Path
 from typing import Dict, List, TypedDict
-from winreg import HKEY_CURRENT_USER, EnumKey, EnumValue, OpenKey, QueryInfoKey
+from winreg import (
+    HKEY_CURRENT_USER,
+    KEY_WRITE,
+    REG_DWORD,
+    REG_SZ,
+    CloseKey,
+    EnumKey,
+    EnumValue,
+    OpenKey,
+    QueryInfoKey,
+    SetValueEx,
+)
 
-from commons.command_line import parse_table, run_command
-from commons.functional import compose
 from models import System
+
+from .command_line import parse_table, run_command
+from .functional import compose
 
 
 def list_systems() -> List[System]:
@@ -27,6 +40,7 @@ def list_systems() -> List[System]:
 class AdditionalInfo(TypedDict):
     id: str
     base_path: str
+    default_user: str
 
 
 def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
@@ -49,12 +63,15 @@ def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
         system_id = subfolder_name
         distribution_name = None
         base_path = None
+        default_user = None
         for j in range(values_count):
             name, value, type_ = EnumValue(subfolder, j)
             if name == "DistributionName":
                 distribution_name = value
             elif name == "BasePath":
                 base_path = value
+            elif name == "DefaultUid":
+                default_user = value
 
         if distribution_name is None:
             continue
@@ -62,6 +79,7 @@ def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
         systems[distribution_name] = {
             "id": system_id,
             "base_path": base_path,
+            "default_user": default_user,
         }
 
     return systems
@@ -109,8 +127,30 @@ def _factory_system(
             "version": version,
             "id": additional_info["id"],
             "base_path": additional_info["base_path"],
+            "default_user": additional_info["default_user"],
         }
     )
+
+
+def _get_system_key(system: System):
+    return rf"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{system.id}"
+
+
+def set_default_user(system: System, user_id: str):
+    key = _get_system_key(system)
+
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+    SetValueEx(registry_key, "DefaultUid", 0, REG_DWORD, user_id)
+    CloseKey(registry_key)
+
+
+def set_base_path(system: System, new_image_path: Path):
+    key = _get_system_key(system)
+
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+    new_base_path = str(new_image_path.absolute())
+    SetValueEx(registry_key, "BasePath", 0, REG_SZ, new_base_path)
+    CloseKey(registry_key)
 
 
 def terminate_system(system: System):

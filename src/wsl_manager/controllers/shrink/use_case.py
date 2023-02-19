@@ -1,7 +1,7 @@
 import views
+from commons.wsl import list_systems, terminate_system
 
 from .disk import disk_shrink, get_script_content
-from .wsl import list_systems, terminate_system
 
 
 def shrink():

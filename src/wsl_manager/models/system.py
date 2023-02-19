@@ -7,17 +7,25 @@ class TypedSystem(TypedDict):
     state: str
     version: str
     base_path: str
+    default_user: str
 
 
 class System:
     def __init__(
-        self, id: str, name: str, state: str, version: str, base_path: str
+        self,
+        id: str,
+        name: str,
+        state: str,
+        version: str,
+        base_path: str,
+        default_user: str,
     ):
         self.id = id
         self.name = name
         self.state = state
         self.version = version
         self.base_path = base_path
+        self.default_user = default_user
 
     def __repr__(self):
         return (
@@ -51,6 +59,7 @@ class System:
             data["state"],
             data["version"],
             data["base_path"],
+            data["default_user"],
         )
 
     @classmethod

@@ -1,8 +1,16 @@
 import controllers
+import views
 
 
 def main():
-    controllers.shrink()
+    option = views.display_menu()
+
+    if option == "shrink":
+        controllers.shrink()
+    elif option == "move":
+        controllers.move()
+    else:
+        raise ValueError("Invalid option")
 
 
 if __name__ == "__main__":
