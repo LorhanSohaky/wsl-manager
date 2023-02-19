@@ -1,4 +1,3 @@
-from .disk import get_script_content, shrink
-from .wsl import list_systems, terminate_system
+from .shrink import shrink
 
-__all__ = ["list_systems", "terminate_system", "shrink", "get_script_content"]
+__all__ = ["shrink"]

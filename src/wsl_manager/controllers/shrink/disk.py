@@ -14,7 +14,7 @@ def get_script_content(system: System) -> str:
     """
 
 
-def shrink(script_content: str) -> None:
+def disk_shrink(script_content: str) -> None:
     script_file = _create_temporary_script_file(script_content)
 
     output = run_command(f"diskpart /s {script_file}")
