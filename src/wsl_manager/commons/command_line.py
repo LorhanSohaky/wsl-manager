@@ -1,10 +1,11 @@
-import functools
 import re
 import subprocess
 from dataclasses import dataclass
 from typing import List
 
 import chardet
+
+__all__ = ["parse_table", "run_command"]
 
 
 @dataclass
@@ -43,10 +44,3 @@ def run_command(command: str) -> RunCommand:
     stdout = output.stdout
     decoded_output = stdout.replace("\x00", "")
     return RunCommand(decoded_output, output.returncode)
-
-
-def compose(*functions):
-    def compose2(f, g):
-        return lambda x: f(g(x))
-
-    return functools.reduce(compose2, functions, lambda x: x)

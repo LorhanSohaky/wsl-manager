@@ -3,9 +3,9 @@ from itertools import repeat
 from typing import Dict, List, TypedDict
 from winreg import HKEY_CURRENT_USER, EnumKey, EnumValue, OpenKey, QueryInfoKey
 
+from commons.command_line import parse_table, run_command
+from commons.functional import compose
 from models import System
-
-from .utils import compose, parse_table, run_command
 
 
 def list_systems() -> List[System]:
