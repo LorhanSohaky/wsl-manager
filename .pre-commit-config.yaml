@@ -20,6 +20,7 @@ repos:
         entry: poetry run isort
         language: system
         types: [python]
+        args: ["--profile", "black", "--line-length", "79"]
   - repo: local
     hooks:
       - id: flake8
