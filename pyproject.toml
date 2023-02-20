@@ -5,10 +5,17 @@ description = "An easy way to maintain your WSL distros"
 authors = ["Lorhan Sohaky <contato+gi74@lorhan.me>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "wsl_manager"}]
+packages = [{ include = "src/wsl_manager" }]
 
 [tool.poe.tasks]
 fix = "pre-commit run --all-files"
+build = "cxfreeze src\\wsl_manager\\main.py --target-name=wsl-manager --target-dir=build"
+copy_files = [
+    { shell = "Copy-Item 'README.md' -Destination 'build\\README.md'", interpreter = "powershell" },
+    { shell = "Copy-Item 'LICENSE.md' -Destination 'build\\LICENSE.md'", interpreter = "powershell" },
+]
+release = ["build", "copy_files"]
+
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -21,6 +28,8 @@ isort = "^5.12.0"
 pre-commit = "^3.0.4"
 black = "^23.1.0"
 poethepoet = "^0.18.1"
+cx-freeze = "^6.14.4"
+
 
 [build-system]
 requires = ["poetry-core"]
