@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wsl-manager"
-version = "0.1.0"
+version = "1.0.0"
 description = "An easy way to maintain your WSL distros"
 authors = ["Lorhan Sohaky <contato+gi74@lorhan.me>"]
 license = "MIT"
