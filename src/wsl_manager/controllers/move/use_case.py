@@ -36,3 +36,4 @@ def move():
         raise NotImplementedError("Strategy not implemented")
 
     views.display_move_ok()
+    views.press_any_key_to_continue()

@@ -18,6 +18,7 @@ from .shrink import (
     display_shrinking,
 )
 from .systems import display_systems, display_warning_to_terminate_system
+from .utils import press_any_key_to_continue
 
 __all__ = [
     "console",
@@ -37,4 +38,5 @@ __all__ = [
     "display_audit_moving",
     "display_select_path_to_image",
     "display_menu",
+    "press_any_key_to_continue",
 ]

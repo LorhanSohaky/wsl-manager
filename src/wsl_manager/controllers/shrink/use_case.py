@@ -22,3 +22,4 @@ def shrink():
     views.display_shrinking()
     disk_shrink(script_content)
     views.display_shrink_ok()
+    views.press_any_key_to_continue()

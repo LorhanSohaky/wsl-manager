@@ -1,5 +1,5 @@
 from .console import console
-from .utils import LowercasePrompt
+from .utils import press_any_key_to_continue
 
 
 def display_script_content(script_content: str) -> None:
@@ -8,7 +8,7 @@ def display_script_content(script_content: str) -> None:
     console.print(script_content)
     console.print("=====================================")
     console.print("")
-    LowercasePrompt.get_input(console, "Press any key to continue", False)
+    press_any_key_to_continue()
 
 
 def display_shrinking() -> None:
