@@ -2,10 +2,12 @@ import shutil
 from pathlib import Path
 
 import views
+from commons.decorators import raise_if_system_is_running
 from commons.wsl import set_base_path, set_default_user
 from models import System
 
 
+@raise_if_system_is_running
 def move_using_windows_registry(system: System, image_path: Path) -> None:
     image_path.mkdir(parents=True, exist_ok=True)
 

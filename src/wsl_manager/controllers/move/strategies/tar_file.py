@@ -2,10 +2,12 @@ from pathlib import Path
 
 import views
 from commons.command_line import RunCommand, run_command
+from commons.decorators import raise_if_system_is_running
 from commons.wsl import set_default_user
 from models import System
 
 
+@raise_if_system_is_running
 def move_using_tar_file(
     system: System, tar_path: Path, image_path: Path
 ) -> None:

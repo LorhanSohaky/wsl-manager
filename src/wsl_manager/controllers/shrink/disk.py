@@ -2,9 +2,11 @@ import os
 from tempfile import NamedTemporaryFile
 
 from commons.command_line import run_command
+from commons.decorators import raise_if_system_is_running
 from models import System
 
 
+@raise_if_system_is_running
 def get_script_content(system: System) -> str:
     return f"""
     select vdisk file="{os.path.join(system.base_path, 'ext4.vhdx')}"
