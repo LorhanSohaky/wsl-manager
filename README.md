@@ -15,10 +15,10 @@ It allows you to shrink your distro and move it to another drive or path
 </div>
 
 ## Status
-<img alt="License" src="https://img.shields.io/github/license/LorhanSohaky/wsl-manager?style=flat-square">
-<img src="https://img.shields.io/badge/OS-windows-blue??style=flat&logo=Windows&logoColor=b0c0c0&labelColor=363D44&style=flat-square" alt="Operating systems"/>
-<img alt="Issues" src="https://img.shields.io/github/issues/LorhanSohaky/wsl-manager?style=flat-square">
-<img alt="Pull requests" src="https://img.shields.io/github/issues-pr/LorhanSohaky/wsl-manager?style=flat-square">
+<a href="https://github.com/LorhanSohaky/wsl-manager/blob/master/LICENSE.md"><img alt="License" src="https://img.shields.io/github/license/LorhanSohaky/wsl-manager?style=flat-square"></a>
+<img src="https://img.shields.io/badge/OS-windows-blue??style=flat&logos=Windows&logoColor=b0c0c0&labelColor=363D44&style=flat-square" alt="Operating systems"/>
+<a href="https://github.com/LorhanSohaky/wsl-manager/issues"><img alt="Issues" src="https://img.shields.io/github/issues/LorhanSohaky/wsl-manager?style=flat-square"></a>
+<a href="https://github.com/LorhanSohaky/wsl-manager/pulls"><img alt="Pull requests" src="https://img.shields.io/github/issues-pr/LorhanSohaky/wsl-manager?style=flat-square"></a>
 
 ## Features
 
