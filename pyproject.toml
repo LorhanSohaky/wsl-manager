@@ -9,7 +9,7 @@ packages = [{ include = "src/wsl_manager" }]
 
 [tool.poe.tasks]
 fix = "pre-commit run --all-files"
-build = "cxfreeze src\\wsl_manager\\main.py --target-name=wsl-manager --target-dir=build"
+build = "cxfreeze src\\wsl_manager\\main.py --target-name=wsl-manager  -c --target-dir=build"
 copy_files = [
     { shell = "Copy-Item 'README.md' -Destination 'build\\README.md'", interpreter = "powershell" },
     { shell = "Copy-Item 'LICENSE.md' -Destination 'build\\LICENSE.md'", interpreter = "powershell" },
