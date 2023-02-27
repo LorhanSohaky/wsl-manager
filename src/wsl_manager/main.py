@@ -1,5 +1,15 @@
+import logging
+
 import controllers
 import views
+from rich.logging import RichHandler
+
+logging.basicConfig(
+    level="ERROR",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=False)],
+)
 
 
 def main():
@@ -12,8 +22,9 @@ def main():
             controllers.move()
         else:
             raise ValueError("Invalid option")
-    except Exception:
-        views.console.print_exception(show_locals=True)
+    except Exception as exception:
+        log = logging.getLogger("rich")
+        log.exception(exception)
         views.press_any_key_to_continue()
 
 
