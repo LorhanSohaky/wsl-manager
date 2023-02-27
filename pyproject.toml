@@ -14,7 +14,10 @@ copy_files = [
     { shell = "Copy-Item 'README.md' -Destination 'build\\README.md'", interpreter = "powershell" },
     { shell = "Copy-Item 'LICENSE.md' -Destination 'build\\LICENSE.md'", interpreter = "powershell" },
 ]
-release = ["build", "copy_files"]
+generate_zip = [
+    { shell = "Compress-Archive -Path 'build\\*' -DestinationPath 'wsl-manager.zip'", interpreter = "powershell" },
+]
+release = ["build", "copy_files", "generate_zip"]
 
 
 [tool.poetry.dependencies]
