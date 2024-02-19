@@ -20,6 +20,8 @@ def main():
             controllers.shrink()
         elif option == "move":
             controllers.move()
+        elif option == "recover":
+            controllers.recover()
         else:
             raise ValueError("Invalid option")
     except Exception as exception:

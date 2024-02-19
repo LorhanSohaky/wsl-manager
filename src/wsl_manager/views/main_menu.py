@@ -21,6 +21,11 @@ def display_menu() -> str:
             "name": "Move",
             "description": "Move the system to another path or disk",
         },
+        {
+            "id": "recover",
+            "name": "Recover",
+            "description": "Recover a system from a vhdx file",
+        },
     ]
 
     for number, option in enumerate(options, 1):
