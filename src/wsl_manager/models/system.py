@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import TypedDict, Optional
 
 
 class TypedSystem(TypedDict):
@@ -13,7 +13,7 @@ class TypedSystem(TypedDict):
 class System:
     def __init__(
         self,
-        id: str,
+        id: Optional[str],
         name: str,
         state: str,
         version: str,

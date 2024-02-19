@@ -11,7 +11,9 @@ from winreg import (
     EnumKey,
     EnumValue,
     OpenKey,
+    CreateKey,
     QueryInfoKey,
+    HKEYType,
     SetValueEx,
 )
 
@@ -19,6 +21,15 @@ from models import System
 
 from .command_line import parse_table, run_command
 from .functional import compose
+
+DEFAULT_FLAGS = 15
+DEFAULT_VERSION = 2
+DEFAULT_STATE = 1
+
+class AdditionalInfo(TypedDict):
+    id: str
+    base_path: str
+    default_user: str
 
 
 def list_systems() -> List[System]:
@@ -37,10 +48,72 @@ def list_systems() -> List[System]:
     return systems
 
 
-class AdditionalInfo(TypedDict):
-    id: str
-    base_path: str
-    default_user: str
+def set_default_user(system: System, user_id: str):
+    key = _get_system_key(system)
+
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+    __set_default_user(registry_key, user_id)
+    CloseKey(registry_key)
+
+
+def create_system(system: System):
+    _raise_if_already_exists(system)
+
+    key = _get_system_key(system)
+    registry_key= CreateKey(HKEY_CURRENT_USER, key)
+    CloseKey(registry_key)
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+
+    __set_base_path(registry_key, Path(system.base_path))
+    __set_default_user(registry_key, system.default_user)
+    __set_distribution_name(registry_key, system.name)
+    __set_default_metadata(registry_key)
+
+    CloseKey(registry_key)
+
+def update_name_and_default_user(system: System):
+    key = _get_system_key(system)
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+
+    __set_default_user(registry_key, system.default_user)
+    __set_distribution_name(registry_key, system.name)
+
+    CloseKey(registry_key)
+
+
+def set_base_path(system: System, new_image_path: Path):
+    key = _get_system_key(system)
+
+    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
+    __set_base_path(registry_key, new_image_path)
+    CloseKey(registry_key)
+
+
+def terminate_system(system: System):
+    output = run_command(f"wsl --terminate {system.name}")
+
+    if output.returncode != 0:
+        raise Exception("Could not terminate system")
+
+
+def _raise_if_already_exists(system: System):
+    systems = _list_systems_additional_infos()
+    ids = [system["id"] for system in systems.values()]
+
+    if system.id in ids:
+        raise Exception("System already exists")
+
+
+def __set_default_user(registry_key:HKEYType, user_id: str):
+    SetValueEx(registry_key, "DefaultUid", 0, REG_DWORD, int(user_id))
+
+def __set_distribution_name(registry_key:HKEYType, distribution_name: str):
+    SetValueEx(registry_key, "DistributionName", 0, REG_SZ, distribution_name)
+
+def __set_default_metadata(registry_key:HKEYType):
+    SetValueEx(registry_key, "Flags", 0, REG_DWORD, DEFAULT_FLAGS)
+    SetValueEx(registry_key, "Version", 0, REG_DWORD, DEFAULT_VERSION)
+    SetValueEx(registry_key, "State", 0, REG_DWORD, DEFAULT_STATE)
 
 
 def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
@@ -136,25 +209,7 @@ def _get_system_key(system: System):
     return rf"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{system.id}"
 
 
-def set_default_user(system: System, user_id: str):
-    key = _get_system_key(system)
+def __set_base_path(registry_key:HKEYType, base_path: Path):
+    path = str(base_path.absolute())
+    SetValueEx(registry_key, "BasePath", 0, REG_SZ, path)
 
-    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
-    SetValueEx(registry_key, "DefaultUid", 0, REG_DWORD, user_id)
-    CloseKey(registry_key)
-
-
-def set_base_path(system: System, new_image_path: Path):
-    key = _get_system_key(system)
-
-    registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
-    new_base_path = str(new_image_path.absolute())
-    SetValueEx(registry_key, "BasePath", 0, REG_SZ, new_base_path)
-    CloseKey(registry_key)
-
-
-def terminate_system(system: System):
-    output = run_command(f"wsl --terminate {system.name}")
-
-    if output.returncode != 0:
-        raise Exception("Could not terminate system")
