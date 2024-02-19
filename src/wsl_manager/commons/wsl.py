@@ -1,7 +1,7 @@
 import re
 from itertools import repeat
 from pathlib import Path
-from typing import Dict, List, TypedDict
+from typing import Dict, List, TypedDict, Union
 from winreg import (
     HKEY_CURRENT_USER,
     KEY_WRITE,
@@ -25,6 +25,7 @@ from .functional import compose
 DEFAULT_FLAGS = 15
 DEFAULT_VERSION = 2
 DEFAULT_STATE = 1
+
 
 class AdditionalInfo(TypedDict):
     id: str
@@ -60,7 +61,7 @@ def create_system(system: System):
     _raise_if_already_exists(system)
 
     key = _get_system_key(system)
-    registry_key= CreateKey(HKEY_CURRENT_USER, key)
+    registry_key = CreateKey(HKEY_CURRENT_USER, key)
     CloseKey(registry_key)
     registry_key = OpenKey(HKEY_CURRENT_USER, key, 0, KEY_WRITE)
 
@@ -70,6 +71,7 @@ def create_system(system: System):
     __set_default_metadata(registry_key)
 
     CloseKey(registry_key)
+
 
 def update_name_and_default_user(system: System):
     key = _get_system_key(system)
@@ -104,13 +106,15 @@ def _raise_if_already_exists(system: System):
         raise Exception("System already exists")
 
 
-def __set_default_user(registry_key:HKEYType, user_id: str):
-    SetValueEx(registry_key, "DefaultUid", 0, REG_DWORD, int(user_id))
+def __set_default_user(registry_key: HKEYType, user_id: int):
+    SetValueEx(registry_key, "DefaultUid", 0, REG_DWORD, user_id)
 
-def __set_distribution_name(registry_key:HKEYType, distribution_name: str):
+
+def __set_distribution_name(registry_key: HKEYType, distribution_name: str):
     SetValueEx(registry_key, "DistributionName", 0, REG_SZ, distribution_name)
 
-def __set_default_metadata(registry_key:HKEYType):
+
+def __set_default_metadata(registry_key: HKEYType):
     SetValueEx(registry_key, "Flags", 0, REG_DWORD, DEFAULT_FLAGS)
     SetValueEx(registry_key, "Version", 0, REG_DWORD, DEFAULT_VERSION)
     SetValueEx(registry_key, "State", 0, REG_DWORD, DEFAULT_STATE)
@@ -134,9 +138,9 @@ def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
             continue
 
         system_id = subfolder_name
-        distribution_name = None
-        base_path = None
-        default_user = None
+        distribution_name: Union[None, str] = None
+        base_path: Union[None, str] = None
+        default_user: Union[None, int] = None
         for j in range(values_count):
             name, value, type_ = EnumValue(subfolder, j)
             if name == "DistributionName":
@@ -159,10 +163,7 @@ def _list_systems_additional_infos() -> Dict[str, AdditionalInfo]:
 
 
 def _is_guid(string: str) -> bool:
-    return (
-        re.match(r"{[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}}", string)
-        is not None
-    )
+    return re.match(r"{[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}}", string) is not None
 
 
 def _clean_table(table: List[List[str]]) -> List[List[str]]:
@@ -182,9 +183,7 @@ def _remove_asterisk_if_present(string: str) -> str:
     return string
 
 
-def _factory_system(
-    infos: Dict[str, AdditionalInfo], columns: List[str]
-) -> System:
+def _factory_system(infos: Dict[str, AdditionalInfo], columns: List[str]) -> System:
     name = columns[0]
     state = columns[1]
     version = columns[2]
@@ -209,7 +208,6 @@ def _get_system_key(system: System):
     return rf"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{system.id}"
 
 
-def __set_base_path(registry_key:HKEYType, base_path: Path):
+def __set_base_path(registry_key: HKEYType, base_path: Path):
     path = str(base_path.absolute())
     SetValueEx(registry_key, "BasePath", 0, REG_SZ, path)
-

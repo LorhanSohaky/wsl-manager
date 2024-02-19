@@ -24,6 +24,7 @@ release = ["build", "copy_files", "generate_zip"]
 python = "^3.11"
 rich = "^13.3.1"
 chardet = "^5.1.0"
+typing-extensions = "^4.9.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

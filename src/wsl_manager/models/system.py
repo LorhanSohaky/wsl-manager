@@ -1,13 +1,14 @@
 from typing import TypedDict, Optional
+from typing_extensions import NotRequired
 
 
 class TypedSystem(TypedDict):
-    id: str
+    id: NotRequired[str]
     name: str
-    state: str
+    state: NotRequired[str]
     version: str
     base_path: str
-    default_user: str
+    default_user: int
 
 
 class System:
@@ -15,10 +16,10 @@ class System:
         self,
         id: Optional[str],
         name: str,
-        state: str,
+        state: Optional[str],
         version: str,
         base_path: str,
-        default_user: str,
+        default_user: int,
     ):
         self.id = id
         self.name = name
@@ -54,9 +55,9 @@ class System:
     @classmethod
     def from_dict(cls, data: TypedSystem):
         return cls(
-            data["id"],
+            data.get("id"),
             data["name"],
-            data["state"],
+            data.get("state"),
             data["version"],
             data["base_path"],
             data["default_user"],
