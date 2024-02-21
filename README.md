@@ -24,6 +24,7 @@ It allows you to shrink your distro and move it to another drive or path
 
 - Shrink your distro
 - Move your distro to another drive or path
+- Restore your distro from a vhdx file
 
 ## Installation
 
@@ -79,6 +80,10 @@ If you choose `windows registry`, the code will move the `ext4.vhdx` file to the
 </details>
 
 <a name="move-strategies">![Move strategies](docs/img/move-strategies.png)</a>
+
+### Restoring
+
+When selecting the restore option, you will select the vhdx file of the distro you want to restore. After that, you will input the name of the distro and others information.
 
 ## License
 
